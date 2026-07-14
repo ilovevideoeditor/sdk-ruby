@@ -5,6 +5,7 @@ Official Ruby SDK for iLoveVideoEditor — render videos programmatically with a
 iLoveVideoEditor is a cloud video rendering API: submit a JSON scene description (`VideoJSON`) or a template with variables, queue a render job, and download the resulting MP4/WebM when it finishes. This gem is the official Ruby client — a high-level wrapper with blocking renders, polling and progress callbacks, plus the full auto-generated OpenAPI client for every endpoint.
 
 [![Gem Version](https://img.shields.io/gem/v/ilovevideoeditor-sdk.svg)](https://rubygems.org/gems/ilovevideoeditor-sdk) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Docs](https://img.shields.io/badge/docs-ilovevideoeditor.com-blue)](https://ilovevideoeditor.com/docs/sdks)
+- API reference: [OpenAPI spec](https://ilovevideoeditor.com/docs/api/openapi.yaml) · [Postman collection](https://ilovevideoeditor.com/docs/api/postman-collection.json)
 
 ## Features
 
