@@ -26,6 +26,14 @@ module ILoveVideoEditor
       @templates_api = ILoveVideoEditor::TemplatesApi.new
     end
 
+    # Normalize the API progress payload ({done, total, percent}) to a percent number.
+    def self.progress_percent(progress)
+      return 0.0 if progress.nil?
+      return progress.to_f if progress.is_a?(Numeric)
+
+      progress.respond_to?(:percent) && progress.percent ? progress.percent.to_f : 0.0
+    end
+
     # Submit a VideoJSON payload and block until the render finishes.
     def render(video_json, poll_interval: 2, max_wait: 300, on_progress: nil)
       body = ILoveVideoEditor::QueueRenderRequest.new(video_json: video_json)
@@ -35,14 +43,15 @@ module ILoveVideoEditor
       deadline = Time.now + max_wait
       while Time.now < deadline
         status = @render_api.get_render_status(job_id)
-        on_progress&.call(status.status, status.progress)
+        progress = self.class.progress_percent(status.progress)
+        on_progress&.call(status.status, progress)
 
         if status.status == 'completed'
           refresh = @render_api.refresh_render_url(job_id)
           return RenderResult.new(
             job_id: job_id,
             status: status.status,
-            progress: status.progress,
+            progress: progress,
             url: status.url,
             download_url: refresh.download_url,
             error: status.error,
@@ -55,7 +64,7 @@ module ILoveVideoEditor
           return RenderResult.new(
             job_id: job_id,
             status: status.status,
-            progress: status.progress,
+            progress: progress,
             error: status.error,
             created_at: status.created_at,
             completed_at: status.completed_at
@@ -73,7 +82,7 @@ module ILoveVideoEditor
       RenderResult.new(
         job_id: status.job_id,
         status: status.status,
-        progress: status.progress,
+        progress: self.class.progress_percent(status.progress),
         url: status.url,
         error: status.error,
         created_at: status.created_at,

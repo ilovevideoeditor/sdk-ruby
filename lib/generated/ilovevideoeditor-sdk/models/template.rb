@@ -28,8 +28,6 @@ module ILoveVideoEditor
 
     attr_accessor :icon
 
-    attr_accessor :mode
-
     attr_accessor :tool_id
 
     attr_accessor :variables_schema
@@ -65,7 +63,6 @@ module ILoveVideoEditor
         :'platform' => :'platform',
         :'accent_color' => :'accentColor',
         :'icon' => :'icon',
-        :'mode' => :'mode',
         :'tool_id' => :'toolId',
         :'variables_schema' => :'variablesSchema'
       }
@@ -90,7 +87,6 @@ module ILoveVideoEditor
         :'platform' => :'String',
         :'accent_color' => :'String',
         :'icon' => :'String',
-        :'mode' => :'String',
         :'tool_id' => :'String',
         :'variables_schema' => :'Array<Hash<String, Object>>'
       }
@@ -154,12 +150,6 @@ module ILoveVideoEditor
         self.icon = nil
       end
 
-      if attributes.key?(:'mode')
-        self.mode = attributes[:'mode']
-      else
-        self.mode = nil
-      end
-
       if attributes.key?(:'tool_id')
         self.tool_id = attributes[:'tool_id']
       end
@@ -196,10 +186,6 @@ module ILoveVideoEditor
         invalid_properties.push('invalid value for "icon", icon cannot be nil.')
       end
 
-      if @mode.nil?
-        invalid_properties.push('invalid value for "mode", mode cannot be nil.')
-      end
-
       invalid_properties
     end
 
@@ -214,9 +200,6 @@ module ILoveVideoEditor
       return false unless platform_validator.valid?(@platform)
       return false if @accent_color.nil?
       return false if @icon.nil?
-      return false if @mode.nil?
-      mode_validator = EnumAttributeValidator.new('String', ["preset", "project"])
-      return false unless mode_validator.valid?(@mode)
       true
     end
 
@@ -270,16 +253,6 @@ module ILoveVideoEditor
       @icon = icon
     end
 
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] mode Object to be assigned
-    def mode=(mode)
-      validator = EnumAttributeValidator.new('String', ["preset", "project"])
-      unless validator.valid?(mode)
-        fail ArgumentError, "invalid value for \"mode\", must be one of #{validator.allowable_values}."
-      end
-      @mode = mode
-    end
-
     # Checks equality by comparing each attribute.
     # @param [Object] Object to be compared
     def ==(o)
@@ -291,7 +264,6 @@ module ILoveVideoEditor
           platform == o.platform &&
           accent_color == o.accent_color &&
           icon == o.icon &&
-          mode == o.mode &&
           tool_id == o.tool_id &&
           variables_schema == o.variables_schema
     end
@@ -305,7 +277,7 @@ module ILoveVideoEditor
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, name, description, platform, accent_color, icon, mode, tool_id, variables_schema].hash
+      [id, name, description, platform, accent_color, icon, tool_id, variables_schema].hash
     end
 
     # Builds the object from hash
