@@ -4,7 +4,7 @@ Official Ruby SDK for iLoveVideoEditor — render videos programmatically with a
 
 iLoveVideoEditor is a cloud video rendering API: submit a JSON scene description (`VideoJSON`) or a template with variables, queue a render job, and download the resulting MP4/WebM when it finishes. This gem is the official Ruby client — a high-level wrapper with blocking renders, polling and progress callbacks, plus the full auto-generated OpenAPI client for every endpoint.
 
-[![Gem Version](https://img.shields.io/gem/v/ilovevideoeditor-sdk.svg)](https://rubygems.org/gems/ilovevideoeditor-sdk) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Docs](https://img.shields.io/badge/docs-ilovevideoeditor.com-blue)](https://ilovevideoeditor.com/docs/sdks)
+[![Gem Version](https://img.shields.io/gem/v/ilovevideoeditor-sdk.svg)](https://rubygems.org/gems/ilovevideoeditor-sdk) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Docs](https://img.shields.io/badge/docs-ilovevideoeditor.com-blue)](https://ilovevideoeditor.com/docs/sdks) [![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/56628364-3f13fc43-a1e0-489a-804a-dc0582999ddf?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D56628364-3f13fc43-a1e0-489a-804a-dc0582999ddf%26entityType%3Dcollection%26workspaceId%3Df6303c1d-8772-405a-8999-6b6077bd13a5)
 - API reference: [OpenAPI spec](https://ilovevideoeditor.com/docs/api/openapi.yaml) · [Postman collection](https://ilovevideoeditor.com/docs/api/postman-collection.json)
 
 ## Features
