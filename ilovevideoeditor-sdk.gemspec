@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ilovevideoeditor-sdk'
-  s.version     = '1.0.1'
+  s.version     = '1.0.2'
   s.summary     = 'Official Ruby SDK for the iLoveVideoEditor cloud video rendering API'
   s.description = 'Render videos programmatically with the iLoveVideoEditor cloud video API: submit JSON scenes or render templates with variables, queue render jobs, and download the resulting MP4/WebM. ' \
                   'Provides a high-level client with blocking renders, polling and progress callbacks, plus the full auto-generated OpenAPI client for every endpoint. ' \

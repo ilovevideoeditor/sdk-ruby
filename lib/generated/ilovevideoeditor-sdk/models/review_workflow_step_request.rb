@@ -14,17 +14,11 @@ require 'date'
 require 'time'
 
 module ILoveVideoEditor
-  class CreateCheckoutSessionRequest < ApiModelBase
-    attr_accessor :product_id
+  class ReviewWorkflowStepRequest < ApiModelBase
+    attr_accessor :action
 
-    attr_accessor :tier_id
-
-    attr_accessor :mode
-
-    attr_accessor :credits
-
-    # Custom credit top-up amount in EUR (`mode=payment` only). Between 10 and 2500, at most 2 decimal places. When set, the pay-what-you-want credits product is used and any `productId` is ignored.
-    attr_accessor :amount_eur
+    # Variable edits applied on approve.
+    attr_accessor :variables
 
     class EnumAttributeValidator
       attr_reader :datatype
@@ -51,11 +45,8 @@ module ILoveVideoEditor
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'product_id' => :'productId',
-        :'tier_id' => :'tierId',
-        :'mode' => :'mode',
-        :'credits' => :'credits',
-        :'amount_eur' => :'amountEur'
+        :'action' => :'action',
+        :'variables' => :'variables'
       }
     end
 
@@ -72,11 +63,8 @@ module ILoveVideoEditor
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'product_id' => :'String',
-        :'tier_id' => :'String',
-        :'mode' => :'String',
-        :'credits' => :'Integer',
-        :'amount_eur' => :'Float'
+        :'action' => :'String',
+        :'variables' => :'Hash<String, Object>'
       }
     end
 
@@ -90,36 +78,28 @@ module ILoveVideoEditor
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `ILoveVideoEditor::CreateCheckoutSessionRequest` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `ILoveVideoEditor::ReviewWorkflowStepRequest` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       acceptable_attribute_map = self.class.acceptable_attribute_map
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!acceptable_attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `ILoveVideoEditor::CreateCheckoutSessionRequest`. Please check the name to make sure it's valid. List of attributes: " + acceptable_attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `ILoveVideoEditor::ReviewWorkflowStepRequest`. Please check the name to make sure it's valid. List of attributes: " + acceptable_attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'product_id')
-        self.product_id = attributes[:'product_id']
+      if attributes.key?(:'action')
+        self.action = attributes[:'action']
+      else
+        self.action = nil
       end
 
-      if attributes.key?(:'tier_id')
-        self.tier_id = attributes[:'tier_id']
-      end
-
-      if attributes.key?(:'mode')
-        self.mode = attributes[:'mode']
-      end
-
-      if attributes.key?(:'credits')
-        self.credits = attributes[:'credits']
-      end
-
-      if attributes.key?(:'amount_eur')
-        self.amount_eur = attributes[:'amount_eur']
+      if attributes.key?(:'variables')
+        if (value = attributes[:'variables']).is_a?(Hash)
+          self.variables = value
+        end
       end
     end
 
@@ -128,6 +108,10 @@ module ILoveVideoEditor
     def list_invalid_properties
       warn '[DEPRECATED] the `list_invalid_properties` method is obsolete'
       invalid_properties = Array.new
+      if @action.nil?
+        invalid_properties.push('invalid value for "action", action cannot be nil.')
+      end
+
       invalid_properties
     end
 
@@ -135,31 +119,20 @@ module ILoveVideoEditor
     # @return true if the model is valid
     def valid?
       warn '[DEPRECATED] the `valid?` method is obsolete'
-      tier_id_validator = EnumAttributeValidator.new('String', ["free", "starter", "pro", "business"])
-      return false unless tier_id_validator.valid?(@tier_id)
-      mode_validator = EnumAttributeValidator.new('String', ["subscription", "payment"])
-      return false unless mode_validator.valid?(@mode)
+      return false if @action.nil?
+      action_validator = EnumAttributeValidator.new('String', ["approve", "reject"])
+      return false unless action_validator.valid?(@action)
       true
     end
 
     # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] tier_id Object to be assigned
-    def tier_id=(tier_id)
-      validator = EnumAttributeValidator.new('String', ["free", "starter", "pro", "business"])
-      unless validator.valid?(tier_id)
-        fail ArgumentError, "invalid value for \"tier_id\", must be one of #{validator.allowable_values}."
+    # @param [Object] action Object to be assigned
+    def action=(action)
+      validator = EnumAttributeValidator.new('String', ["approve", "reject"])
+      unless validator.valid?(action)
+        fail ArgumentError, "invalid value for \"action\", must be one of #{validator.allowable_values}."
       end
-      @tier_id = tier_id
-    end
-
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] mode Object to be assigned
-    def mode=(mode)
-      validator = EnumAttributeValidator.new('String', ["subscription", "payment"])
-      unless validator.valid?(mode)
-        fail ArgumentError, "invalid value for \"mode\", must be one of #{validator.allowable_values}."
-      end
-      @mode = mode
+      @action = action
     end
 
     # Checks equality by comparing each attribute.
@@ -167,11 +140,8 @@ module ILoveVideoEditor
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          product_id == o.product_id &&
-          tier_id == o.tier_id &&
-          mode == o.mode &&
-          credits == o.credits &&
-          amount_eur == o.amount_eur
+          action == o.action &&
+          variables == o.variables
     end
 
     # @see the `==` method
@@ -183,7 +153,7 @@ module ILoveVideoEditor
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [product_id, tier_id, mode, credits, amount_eur].hash
+      [action, variables].hash
     end
 
     # Builds the object from hash

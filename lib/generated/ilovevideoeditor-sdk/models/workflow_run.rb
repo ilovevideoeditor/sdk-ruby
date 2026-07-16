@@ -25,6 +25,7 @@ module ILoveVideoEditor
 
     attr_accessor :trigger
 
+    # `queued` → `running` → `completed` / `failed` / `cancelled`. A run with a human-in-the-loop `review` step pauses in `waiting_review` until the step is approved or rejected via `/v1/workflows/runs/{runId}/steps/{stepId}/review`.
     attr_accessor :status
 
     attr_accessor :variables

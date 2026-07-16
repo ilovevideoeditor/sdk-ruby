@@ -268,6 +268,67 @@ module ILoveVideoEditor
       return data, status_code, headers
     end
 
+    # Get a workflow preset
+    # @param id [String] 
+    # @param [Hash] opts the optional parameters
+    # @return [GetWorkflowPreset200Response]
+    def get_workflow_preset(id, opts = {})
+      data, _status_code, _headers = get_workflow_preset_with_http_info(id, opts)
+      data
+    end
+
+    # Get a workflow preset
+    # @param id [String] 
+    # @param [Hash] opts the optional parameters
+    # @return [Array<(GetWorkflowPreset200Response, Integer, Hash)>] GetWorkflowPreset200Response data, response status code and response headers
+    def get_workflow_preset_with_http_info(id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: WorkflowsApi.get_workflow_preset ...'
+      end
+      # verify the required parameter 'id' is set
+      if @api_client.config.client_side_validation && id.nil?
+        fail ArgumentError, "Missing the required parameter 'id' when calling WorkflowsApi.get_workflow_preset"
+      end
+      # resource path
+      local_var_path = '/v1/workflows/presets/{id}'.sub('{id}', CGI.escape(id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'GetWorkflowPreset200Response'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth', 'BearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"WorkflowsApi.get_workflow_preset",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: WorkflowsApi#get_workflow_preset\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Get a workflow run
     # @param run_id [String] 
     # @param [Hash] opts the optional parameters
@@ -325,6 +386,63 @@ module ILoveVideoEditor
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: WorkflowsApi#get_workflow_run\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # List system workflow presets
+    # Returns the code-side catalog of ready-made workflow presets (\"Browse workflows\"). Import one by POSTing its definition to /v1/workflows with sourcePresetId set to the preset id.
+    # @param [Hash] opts the optional parameters
+    # @return [ListWorkflowPresets200Response]
+    def list_workflow_presets(opts = {})
+      data, _status_code, _headers = list_workflow_presets_with_http_info(opts)
+      data
+    end
+
+    # List system workflow presets
+    # Returns the code-side catalog of ready-made workflow presets (\&quot;Browse workflows\&quot;). Import one by POSTing its definition to /v1/workflows with sourcePresetId set to the preset id.
+    # @param [Hash] opts the optional parameters
+    # @return [Array<(ListWorkflowPresets200Response, Integer, Hash)>] ListWorkflowPresets200Response data, response status code and response headers
+    def list_workflow_presets_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: WorkflowsApi.list_workflow_presets ...'
+      end
+      # resource path
+      local_var_path = '/v1/workflows/presets'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'ListWorkflowPresets200Response'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth', 'BearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"WorkflowsApi.list_workflow_presets",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: WorkflowsApi#list_workflow_presets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
@@ -636,6 +754,86 @@ module ILoveVideoEditor
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: WorkflowsApi#retry_workflow_step\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Approve or reject a paused review step
+    # Resolves a human-in-the-loop `review` step that is waiting for input (the run is in `waiting_review` status). Approving resumes the run; rejecting cancels it. Optionally edits run variables before resuming — only keys listed in the step's `editableVariables` are accepted.
+    # @param run_id [String] 
+    # @param step_id [String] 
+    # @param review_workflow_step_request [ReviewWorkflowStepRequest] 
+    # @param [Hash] opts the optional parameters
+    # @return [UploadAsset200Response]
+    def review_workflow_step(run_id, step_id, review_workflow_step_request, opts = {})
+      data, _status_code, _headers = review_workflow_step_with_http_info(run_id, step_id, review_workflow_step_request, opts)
+      data
+    end
+
+    # Approve or reject a paused review step
+    # Resolves a human-in-the-loop &#x60;review&#x60; step that is waiting for input (the run is in &#x60;waiting_review&#x60; status). Approving resumes the run; rejecting cancels it. Optionally edits run variables before resuming — only keys listed in the step&#39;s &#x60;editableVariables&#x60; are accepted.
+    # @param run_id [String] 
+    # @param step_id [String] 
+    # @param review_workflow_step_request [ReviewWorkflowStepRequest] 
+    # @param [Hash] opts the optional parameters
+    # @return [Array<(UploadAsset200Response, Integer, Hash)>] UploadAsset200Response data, response status code and response headers
+    def review_workflow_step_with_http_info(run_id, step_id, review_workflow_step_request, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: WorkflowsApi.review_workflow_step ...'
+      end
+      # verify the required parameter 'run_id' is set
+      if @api_client.config.client_side_validation && run_id.nil?
+        fail ArgumentError, "Missing the required parameter 'run_id' when calling WorkflowsApi.review_workflow_step"
+      end
+      # verify the required parameter 'step_id' is set
+      if @api_client.config.client_side_validation && step_id.nil?
+        fail ArgumentError, "Missing the required parameter 'step_id' when calling WorkflowsApi.review_workflow_step"
+      end
+      # verify the required parameter 'review_workflow_step_request' is set
+      if @api_client.config.client_side_validation && review_workflow_step_request.nil?
+        fail ArgumentError, "Missing the required parameter 'review_workflow_step_request' when calling WorkflowsApi.review_workflow_step"
+      end
+      # resource path
+      local_var_path = '/v1/workflows/runs/{runId}/steps/{stepId}/review'.sub('{runId}', CGI.escape(run_id.to_s)).sub('{stepId}', CGI.escape(step_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      # HTTP header 'Content-Type'
+      content_type = @api_client.select_header_content_type(['application/json'])
+      if !content_type.nil?
+          header_params['Content-Type'] = content_type
+      end
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(review_workflow_step_request)
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'UploadAsset200Response'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth', 'BearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"WorkflowsApi.review_workflow_step",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: WorkflowsApi#review_workflow_step\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

@@ -29,6 +29,9 @@ module ILoveVideoEditor
 
     attr_accessor :is_active
 
+    # Id of the system preset this workflow was imported from (null when built from scratch).
+    attr_accessor :source_preset_id
+
     attr_accessor :created_at
 
     attr_accessor :updated_at
@@ -43,6 +46,7 @@ module ILoveVideoEditor
         :'description' => :'description',
         :'definition' => :'definition',
         :'is_active' => :'isActive',
+        :'source_preset_id' => :'sourcePresetId',
         :'created_at' => :'createdAt',
         :'updated_at' => :'updatedAt'
       }
@@ -68,6 +72,7 @@ module ILoveVideoEditor
         :'description' => :'String',
         :'definition' => :'WorkflowDefinition',
         :'is_active' => :'Boolean',
+        :'source_preset_id' => :'String',
         :'created_at' => :'Time',
         :'updated_at' => :'Time'
       }
@@ -77,6 +82,7 @@ module ILoveVideoEditor
     def self.openapi_nullable
       Set.new([
         :'description',
+        :'source_preset_id',
       ])
     end
 
@@ -134,6 +140,10 @@ module ILoveVideoEditor
         self.is_active = attributes[:'is_active']
       else
         self.is_active = nil
+      end
+
+      if attributes.key?(:'source_preset_id')
+        self.source_preset_id = attributes[:'source_preset_id']
       end
 
       if attributes.key?(:'created_at')
@@ -296,6 +306,7 @@ module ILoveVideoEditor
           description == o.description &&
           definition == o.definition &&
           is_active == o.is_active &&
+          source_preset_id == o.source_preset_id &&
           created_at == o.created_at &&
           updated_at == o.updated_at
     end
@@ -309,7 +320,7 @@ module ILoveVideoEditor
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, workspace_id, created_by, name, description, definition, is_active, created_at, updated_at].hash
+      [id, workspace_id, created_by, name, description, definition, is_active, source_preset_id, created_at, updated_at].hash
     end
 
     # Builds the object from hash

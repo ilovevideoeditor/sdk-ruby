@@ -14,24 +14,31 @@ require 'date'
 require 'time'
 
 module ILoveVideoEditor
-  class TemplateSummary < ApiModelBase
+  class WorkflowPreset < ApiModelBase
     attr_accessor :id
 
     attr_accessor :name
 
     attr_accessor :description
 
-    attr_accessor :platform
+    attr_accessor :category
 
-    attr_accessor :accent_color
+    # Onboarding roles this preset is recommended for.
+    attr_accessor :roles
 
-    attr_accessor :icon
+    # Onboarding goals this preset is recommended for.
+    attr_accessor :goals
 
-    attr_accessor :mode
+    # Onboarding channels this preset is recommended for.
+    attr_accessor :channels
 
-    attr_accessor :tool_id
+    # Toolkit template id whose poster image represents this preset.
+    attr_accessor :poster_template_id
 
-    attr_accessor :variables_schema
+    # Approximate credits consumed per run.
+    attr_accessor :estimated_credits
+
+    attr_accessor :definition
 
     class EnumAttributeValidator
       attr_reader :datatype
@@ -61,12 +68,13 @@ module ILoveVideoEditor
         :'id' => :'id',
         :'name' => :'name',
         :'description' => :'description',
-        :'platform' => :'platform',
-        :'accent_color' => :'accentColor',
-        :'icon' => :'icon',
-        :'mode' => :'mode',
-        :'tool_id' => :'toolId',
-        :'variables_schema' => :'variablesSchema'
+        :'category' => :'category',
+        :'roles' => :'roles',
+        :'goals' => :'goals',
+        :'channels' => :'channels',
+        :'poster_template_id' => :'posterTemplateId',
+        :'estimated_credits' => :'estimatedCredits',
+        :'definition' => :'definition'
       }
     end
 
@@ -86,19 +94,20 @@ module ILoveVideoEditor
         :'id' => :'String',
         :'name' => :'String',
         :'description' => :'String',
-        :'platform' => :'String',
-        :'accent_color' => :'String',
-        :'icon' => :'String',
-        :'mode' => :'String',
-        :'tool_id' => :'String',
-        :'variables_schema' => :'Array<Hash<String, Object>>'
+        :'category' => :'String',
+        :'roles' => :'Array<String>',
+        :'goals' => :'Array<String>',
+        :'channels' => :'Array<String>',
+        :'poster_template_id' => :'String',
+        :'estimated_credits' => :'Integer',
+        :'definition' => :'WorkflowDefinition'
       }
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'tool_id',
+        :'poster_template_id',
       ])
     end
 
@@ -106,14 +115,14 @@ module ILoveVideoEditor
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `ILoveVideoEditor::TemplateSummary` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `ILoveVideoEditor::WorkflowPreset` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       acceptable_attribute_map = self.class.acceptable_attribute_map
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!acceptable_attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `ILoveVideoEditor::TemplateSummary`. Please check the name to make sure it's valid. List of attributes: " + acceptable_attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `ILoveVideoEditor::WorkflowPreset`. Please check the name to make sure it's valid. List of attributes: " + acceptable_attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
@@ -132,40 +141,54 @@ module ILoveVideoEditor
 
       if attributes.key?(:'description')
         self.description = attributes[:'description']
-      end
-
-      if attributes.key?(:'platform')
-        self.platform = attributes[:'platform']
       else
-        self.platform = nil
+        self.description = nil
       end
 
-      if attributes.key?(:'accent_color')
-        self.accent_color = attributes[:'accent_color']
+      if attributes.key?(:'category')
+        self.category = attributes[:'category']
       else
-        self.accent_color = nil
+        self.category = nil
       end
 
-      if attributes.key?(:'icon')
-        self.icon = attributes[:'icon']
-      else
-        self.icon = nil
-      end
-
-      if attributes.key?(:'mode')
-        self.mode = attributes[:'mode']
-      else
-        self.mode = nil
-      end
-
-      if attributes.key?(:'tool_id')
-        self.tool_id = attributes[:'tool_id']
-      end
-
-      if attributes.key?(:'variables_schema')
-        if (value = attributes[:'variables_schema']).is_a?(Array)
-          self.variables_schema = value
+      if attributes.key?(:'roles')
+        if (value = attributes[:'roles']).is_a?(Array)
+          self.roles = value
         end
+      else
+        self.roles = nil
+      end
+
+      if attributes.key?(:'goals')
+        if (value = attributes[:'goals']).is_a?(Array)
+          self.goals = value
+        end
+      else
+        self.goals = nil
+      end
+
+      if attributes.key?(:'channels')
+        if (value = attributes[:'channels']).is_a?(Array)
+          self.channels = value
+        end
+      else
+        self.channels = nil
+      end
+
+      if attributes.key?(:'poster_template_id')
+        self.poster_template_id = attributes[:'poster_template_id']
+      end
+
+      if attributes.key?(:'estimated_credits')
+        self.estimated_credits = attributes[:'estimated_credits']
+      else
+        self.estimated_credits = nil
+      end
+
+      if attributes.key?(:'definition')
+        self.definition = attributes[:'definition']
+      else
+        self.definition = nil
       end
     end
 
@@ -182,20 +205,32 @@ module ILoveVideoEditor
         invalid_properties.push('invalid value for "name", name cannot be nil.')
       end
 
-      if @platform.nil?
-        invalid_properties.push('invalid value for "platform", platform cannot be nil.')
+      if @description.nil?
+        invalid_properties.push('invalid value for "description", description cannot be nil.')
       end
 
-      if @accent_color.nil?
-        invalid_properties.push('invalid value for "accent_color", accent_color cannot be nil.')
+      if @category.nil?
+        invalid_properties.push('invalid value for "category", category cannot be nil.')
       end
 
-      if @icon.nil?
-        invalid_properties.push('invalid value for "icon", icon cannot be nil.')
+      if @roles.nil?
+        invalid_properties.push('invalid value for "roles", roles cannot be nil.')
       end
 
-      if @mode.nil?
-        invalid_properties.push('invalid value for "mode", mode cannot be nil.')
+      if @goals.nil?
+        invalid_properties.push('invalid value for "goals", goals cannot be nil.')
+      end
+
+      if @channels.nil?
+        invalid_properties.push('invalid value for "channels", channels cannot be nil.')
+      end
+
+      if @estimated_credits.nil?
+        invalid_properties.push('invalid value for "estimated_credits", estimated_credits cannot be nil.')
+      end
+
+      if @definition.nil?
+        invalid_properties.push('invalid value for "definition", definition cannot be nil.')
       end
 
       invalid_properties
@@ -207,14 +242,15 @@ module ILoveVideoEditor
       warn '[DEPRECATED] the `valid?` method is obsolete'
       return false if @id.nil?
       return false if @name.nil?
-      return false if @platform.nil?
-      platform_validator = EnumAttributeValidator.new('String', ["youtube", "tiktok", "instagram", "general"])
-      return false unless platform_validator.valid?(@platform)
-      return false if @accent_color.nil?
-      return false if @icon.nil?
-      return false if @mode.nil?
-      mode_validator = EnumAttributeValidator.new('String', ["preset", "project"])
-      return false unless mode_validator.valid?(@mode)
+      return false if @description.nil?
+      return false if @category.nil?
+      category_validator = EnumAttributeValidator.new('String', ["getting-started", "social", "promo", "real_estate", "travel", "events", "news", "beauty", "automotive", "business"])
+      return false unless category_validator.valid?(@category)
+      return false if @roles.nil?
+      return false if @goals.nil?
+      return false if @channels.nil?
+      return false if @estimated_credits.nil?
+      return false if @definition.nil?
       true
     end
 
@@ -238,44 +274,74 @@ module ILoveVideoEditor
       @name = name
     end
 
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] platform Object to be assigned
-    def platform=(platform)
-      validator = EnumAttributeValidator.new('String', ["youtube", "tiktok", "instagram", "general"])
-      unless validator.valid?(platform)
-        fail ArgumentError, "invalid value for \"platform\", must be one of #{validator.allowable_values}."
-      end
-      @platform = platform
-    end
-
     # Custom attribute writer method with validation
-    # @param [Object] accent_color Value to be assigned
-    def accent_color=(accent_color)
-      if accent_color.nil?
-        fail ArgumentError, 'accent_color cannot be nil'
+    # @param [Object] description Value to be assigned
+    def description=(description)
+      if description.nil?
+        fail ArgumentError, 'description cannot be nil'
       end
 
-      @accent_color = accent_color
-    end
-
-    # Custom attribute writer method with validation
-    # @param [Object] icon Value to be assigned
-    def icon=(icon)
-      if icon.nil?
-        fail ArgumentError, 'icon cannot be nil'
-      end
-
-      @icon = icon
+      @description = description
     end
 
     # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] mode Object to be assigned
-    def mode=(mode)
-      validator = EnumAttributeValidator.new('String', ["preset", "project"])
-      unless validator.valid?(mode)
-        fail ArgumentError, "invalid value for \"mode\", must be one of #{validator.allowable_values}."
+    # @param [Object] category Object to be assigned
+    def category=(category)
+      validator = EnumAttributeValidator.new('String', ["getting-started", "social", "promo", "real_estate", "travel", "events", "news", "beauty", "automotive", "business"])
+      unless validator.valid?(category)
+        fail ArgumentError, "invalid value for \"category\", must be one of #{validator.allowable_values}."
       end
-      @mode = mode
+      @category = category
+    end
+
+    # Custom attribute writer method with validation
+    # @param [Object] roles Value to be assigned
+    def roles=(roles)
+      if roles.nil?
+        fail ArgumentError, 'roles cannot be nil'
+      end
+
+      @roles = roles
+    end
+
+    # Custom attribute writer method with validation
+    # @param [Object] goals Value to be assigned
+    def goals=(goals)
+      if goals.nil?
+        fail ArgumentError, 'goals cannot be nil'
+      end
+
+      @goals = goals
+    end
+
+    # Custom attribute writer method with validation
+    # @param [Object] channels Value to be assigned
+    def channels=(channels)
+      if channels.nil?
+        fail ArgumentError, 'channels cannot be nil'
+      end
+
+      @channels = channels
+    end
+
+    # Custom attribute writer method with validation
+    # @param [Object] estimated_credits Value to be assigned
+    def estimated_credits=(estimated_credits)
+      if estimated_credits.nil?
+        fail ArgumentError, 'estimated_credits cannot be nil'
+      end
+
+      @estimated_credits = estimated_credits
+    end
+
+    # Custom attribute writer method with validation
+    # @param [Object] definition Value to be assigned
+    def definition=(definition)
+      if definition.nil?
+        fail ArgumentError, 'definition cannot be nil'
+      end
+
+      @definition = definition
     end
 
     # Checks equality by comparing each attribute.
@@ -286,12 +352,13 @@ module ILoveVideoEditor
           id == o.id &&
           name == o.name &&
           description == o.description &&
-          platform == o.platform &&
-          accent_color == o.accent_color &&
-          icon == o.icon &&
-          mode == o.mode &&
-          tool_id == o.tool_id &&
-          variables_schema == o.variables_schema
+          category == o.category &&
+          roles == o.roles &&
+          goals == o.goals &&
+          channels == o.channels &&
+          poster_template_id == o.poster_template_id &&
+          estimated_credits == o.estimated_credits &&
+          definition == o.definition
     end
 
     # @see the `==` method
@@ -303,7 +370,7 @@ module ILoveVideoEditor
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, name, description, platform, accent_color, icon, mode, tool_id, variables_schema].hash
+      [id, name, description, category, roles, goals, channels, poster_template_id, estimated_credits, definition].hash
     end
 
     # Builds the object from hash

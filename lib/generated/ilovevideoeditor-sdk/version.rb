@@ -11,5 +11,5 @@ Generator version: 7.22.0
 =end
 
 module ILoveVideoEditor
-  VERSION = '1.0.1'
+  VERSION = '1.0.0'
 end

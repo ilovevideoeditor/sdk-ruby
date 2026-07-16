@@ -27,6 +27,7 @@ module ILoveVideoEditor
 
     attr_accessor :config
 
+    # `pending` → `running` → `completed` / `failed` / `skipped`. A `review` step waits in `waiting` for a human decision; the run is in `waiting_review` while any step is waiting.
     attr_accessor :status
 
     attr_accessor :input_url

@@ -23,13 +23,17 @@ module ILoveVideoEditor
 
     attr_accessor :is_active
 
+    # Optional id of a system preset from /v1/workflows/presets this workflow is imported from.
+    attr_accessor :source_preset_id
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'name' => :'name',
         :'description' => :'description',
         :'definition' => :'definition',
-        :'is_active' => :'isActive'
+        :'is_active' => :'isActive',
+        :'source_preset_id' => :'sourcePresetId'
       }
     end
 
@@ -49,7 +53,8 @@ module ILoveVideoEditor
         :'name' => :'String',
         :'description' => :'String',
         :'definition' => :'WorkflowDefinition',
-        :'is_active' => :'Boolean'
+        :'is_active' => :'Boolean',
+        :'source_preset_id' => :'String'
       }
     end
 
@@ -93,6 +98,10 @@ module ILoveVideoEditor
 
       if attributes.key?(:'is_active')
         self.is_active = attributes[:'is_active']
+      end
+
+      if attributes.key?(:'source_preset_id')
+        self.source_preset_id = attributes[:'source_preset_id']
       end
     end
 
@@ -149,7 +158,8 @@ module ILoveVideoEditor
           name == o.name &&
           description == o.description &&
           definition == o.definition &&
-          is_active == o.is_active
+          is_active == o.is_active &&
+          source_preset_id == o.source_preset_id
     end
 
     # @see the `==` method
@@ -161,7 +171,7 @@ module ILoveVideoEditor
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [name, description, definition, is_active].hash
+      [name, description, definition, is_active, source_preset_id].hash
     end
 
     # Builds the object from hash
